@@ -19,14 +19,25 @@ namespace modul5_1302202072
 		public SayaTubeVideo() { }
 		public SayaTubeVideo(string title)
 		{
-			Debug.Assert(title == null, "judul tidak boleh null");
-			Debug.Assert(title.Length > 100, "panjang judul tidak boleh lebih dari 100");
-			this.title = title;
+			Debug.Assert(title != null, "judul tidak boleh null");
+			Debug.Assert(title.Length <= 200, "panjang judul tidak boleh lebih dari 200");
 
-			var rand = new Random();
-			this.id = rand.Next(10000, 99999);
+            try
+            {
+				if(title.Length > 200) throw new Exception("panjang judul tidak boleh lebih dari 200");
+				this.title = title;
+				var rand = new Random();
+				this.id = rand.Next(10000, 99999);
+				this.playCount = 0;
 
-			this.playCount = 0;
+			}catch(ArgumentNullException ex)
+            {
+				Console.WriteLine(ex.Message, "tidal boleh null");
+            }catch(Exception ex)
+            {
+				Console.WriteLine(ex.Message);
+            }
+			
 		}
 		
 		public int getplaycount()
@@ -52,7 +63,9 @@ namespace modul5_1302202072
 			
 			try
 			{
-				if (a > 10000000) throw new Exception("Jumlah input play count melebihi 10.000.000!");
+				if (a > 25000000) throw new Exception("Jumlah input play count melebihi 25.000.000!");
+				if (a < 0) throw new Exception("playcount tidak boleh negatif");
+
 				this.playCount = checked(this.playCount + a);
 			}
 			catch (Exception e)

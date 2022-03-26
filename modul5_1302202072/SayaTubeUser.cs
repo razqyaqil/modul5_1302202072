@@ -4,7 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using System.Diagnostics.Contracts;
 using static modul5_1302202072.SayaTubeVideo;
+
 
 
 
@@ -18,8 +20,8 @@ namespace modul5_1302202072
 
         public SayaTubeUser(string username)
         {
-            Debug.Assert(username == null, "username tidak boleh null");
-            Debug.Assert(username.Length > 100, "panjang username tidak boleh lebih dari 100");
+            Debug.Assert(username != null, "username tidak boleh null");
+            Debug.Assert(username.Length < 100, "panjang username tidak boleh lebih dari 100");
             this.username = username;
 
             var rand = new Random();
@@ -40,19 +42,28 @@ namespace modul5_1302202072
 
         public void addVideo(SayaTubeVideo video)
         {
+
+            Debug.Assert(video != null, "video tidak boleh kosong");
+
             this.uploadedVideos.Add(video);
+
+            Contract.Ensures(this.uploadedVideos.Count < 9);
         }
 
         public void PrintAllVideoPlayvoutn()
         {
             int i = 0;
+            
             foreach (var video in this.uploadedVideos)
             {
                 Console.WriteLine("Username\t: "+this.username);
                 Console.WriteLine("Judul-{0}\t\t: {1}\n",i+1, video.getTitle());
 
                 i++;
+                Contract.Ensures(i < 9);
             }
+           
+
         }
     }
 }
